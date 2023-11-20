@@ -13,8 +13,8 @@ const int RIGHT = 3;
 const int REST = 4;
 
 const int HUNTERS_COUNT = 4;
-bool isRunning = true;
-char map[] =
+bool isRunning = true; //if game is running
+char map[] = //game map
 "====================\n"
 "|                  |\n"
 "|                  |\n"
@@ -27,13 +27,13 @@ char map[] =
 "====================\n";
 
 
-void gotoxy(int x, int y) {
+void gotoxy(int x, int y) { 
 	COORD pos = { x, y };
 	HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(output, pos);
 }
 
-int Listener() {
+int Listener() { //binding keyboard keys to movement
 	if (GetKeyState('W') & 0x8000)
 	{
 		return UP;
@@ -55,7 +55,7 @@ int Listener() {
 		return REST;
 	}
 }
-void Movement(int& dir, int& x, int& y) {
+void Movement(int& dir, int& x, int& y) { //player(bear) movement
 	if (dir == REST) {
 		x = x;
 		y = y;
@@ -76,7 +76,7 @@ void Movement(int& dir, int& x, int& y) {
 		isRunning = false;
 	}
 }
-void ChaserMovement(int& x, int& y, int gx, int gy) {
+void ChaserMovement(int& x, int& y, int gx, int gy) { //hunters movement (after teddy)
 	
 	if (x < gx) {
 		++x;
@@ -92,7 +92,7 @@ void ChaserMovement(int& x, int& y, int gx, int gy) {
 	}
 
 }
-void Render(int bx, int by, char bs, int tx, int ty, char ts, int* hx, int* hy, char hs) {
+void Render(int bx, int by, char bs, int tx, int ty, char ts, int* hx, int* hy, char hs) { 
 	gotoxy(0, 0);
 	map[by * WIDTH + bx] = bs;
 	map[ty * WIDTH + tx] = ts;
@@ -109,12 +109,12 @@ void Render(int bx, int by, char bs, int tx, int ty, char ts, int* hx, int* hy, 
 	{
 		map[hy[i] * WIDTH + hx[i]] = ' ';
 	}
-
+//renders map and game objects on the screen
 
 	
 }
 
-struct Character {
+struct Character { 
 	int dir = REST;
 	char symbol;
 	int x;
@@ -128,12 +128,12 @@ int main()
 #pragma region Characters
 	Character bear;
 	bear.x = WIDTH / 2;
-	bear.y = HEIGHT / 2;
+	bear.y = HEIGHT / 2; //player starting position
 	bear.symbol = 'O';
 
 	Character teddy;
 	teddy.x = bear.x + 2;
-	teddy.y = bear.y + 2;
+	teddy.y = bear.y + 2; //teddy starting position
 	teddy.symbol = 'o';
 
 	Character hunter[4];
@@ -145,7 +145,7 @@ int main()
 	hunter[2].x = 1;
 	hunter[2].y = HEIGHT - 2;
 	hunter[3].x = WIDTH - 3;
-	hunter[3].y = 1;
+	hunter[3].y = 1; //4 hunters starting positions
 
 #pragma endregion
 
@@ -181,12 +181,12 @@ int main()
 			++gametime;
 
 			if (hunter->x == teddy.x && hunter->y == teddy.y) {
-				isRunning = false;
+				isRunning = false; //if teddy is caught, the game ends
 			}
 		}
 	}
 	gotoxy(1, HEIGHT + 2);
-	std::cout << "GAME OVER!" << std::endl;
+	std::cout << "GAME OVER!" << std::endl; //prints that game is over
 }
 
 
